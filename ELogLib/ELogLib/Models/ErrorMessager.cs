@@ -11,7 +11,7 @@ namespace ELogLib.Models
         public void Print(Exception exception, string callerName)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{_typesForPrint[this.Type]}\tException Source: {exception.Source}");
+            sb.AppendLine($"{_typesForPrint[this.Type]}\t{Environment.NewLine}Exception Source: {exception.Source}");
             sb.AppendLine($"\tCaller Name: {callerName}");
             sb.AppendLine($"\tException Message: {exception.Message}");
 
