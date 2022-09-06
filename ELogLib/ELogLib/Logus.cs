@@ -33,7 +33,7 @@ namespace ELogLib
         /// <summary>
         /// Setting status to local instance of Logus.
         /// </summary>
-        private Status LocalStatus { get; set; } = Status.Enabled;
+        public Status LocalStatus { get; set; } = Status.Enabled;
 
         public void Trace(string message, [CallerMemberName] string callerName = "")
         {
