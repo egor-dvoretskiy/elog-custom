@@ -42,13 +42,6 @@ namespace ELogLib.Interfaces
         void Error(string source, string message, [CallerMemberName] string callerName = "");
 
         /// <summary>
-        /// For errors and exceptions that cannot be handled. These messages indicate a failure in the current operation or request, not an app-wide failure.
-        /// For failures that require immediate attention. Examples: data loss scenarios, out of disk space.
-        /// </summary>
-        /// <param name="exception">Poped up exception.</param>
-        void Error(Exception exception, [CallerMemberName] string callerName = "");
-
-        /// <summary>
         /// Decides to log between Info and Warning.
         /// </summary>
         /// <param name="decision">Boolean value that helps to make a decision.</param>

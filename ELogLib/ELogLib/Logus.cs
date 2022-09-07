@@ -62,13 +62,7 @@ namespace ELogLib
         public void Error(string source, string message, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Error(message, callerName);
-        }
-
-        public void Error(Exception exception, [CallerMemberName] string callerName = "")
-        {
-            if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Error(exception, callerName);
+                this.logger.Error(source, message, callerName);
         }
 
         public void Decide(bool decision, string message, [CallerMemberName] string callerName = "")

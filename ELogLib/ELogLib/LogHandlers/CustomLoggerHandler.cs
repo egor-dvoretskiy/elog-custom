@@ -68,12 +68,7 @@ namespace ELogLib.LogHandlers
         /// <inheritdoc/>
         public void Error(string source, string message, [CallerMemberName] string callerName = "")
         {
-            this._errorMessager?.Print(message, callerName);
-        }
-
-        public void Error(Exception exception, [CallerMemberName] string callerName = "")
-        {
-            this._errorMessager?.Print(exception, callerName);
+            this._errorMessager?.Print(source, message, callerName);
         }
 
         /// <inheritdoc/>

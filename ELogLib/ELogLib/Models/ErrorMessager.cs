@@ -8,14 +8,14 @@ namespace ELogLib.Models
 {
     internal class ErrorMessager : Messager
     {
-        public void Print(Exception exception, string callerName)
+        public void Print(string source, string message, string callerName)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"-------------->\t{_typesForPrint[this.Type]}\tCaller Name: {callerName}");
             sb.AppendLine("{");
             sb.AppendLine();
-            sb.AppendLine($"Exception Source: {exception.Source}");
-            sb.AppendLine($"Exception Message: {exception.Message}");
+            sb.AppendLine($"Error Source: {source}");
+            sb.AppendLine($"Error Message: {message}");
             sb.AppendLine();
             sb.AppendLine("}");
 
