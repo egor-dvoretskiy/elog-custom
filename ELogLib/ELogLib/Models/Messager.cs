@@ -26,8 +26,10 @@ namespace ELogLib.Models
         public void Print(string message, string callerName)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{_typesForPrint[this.Type]}\t{Environment.NewLine}Caller Name: {callerName}");
-            sb.AppendLine($"\t{message}");
+            sb.AppendLine($"{_typesForPrint[this.Type]}{Environment.NewLine}\tCaller Name: {callerName}");
+            sb.AppendLine("{");
+            sb.AppendLine($"{message}");
+            sb.AppendLine("}");
 
             Console.ForegroundColor = this.Color;
             Console.WriteLine(sb.ToString());
