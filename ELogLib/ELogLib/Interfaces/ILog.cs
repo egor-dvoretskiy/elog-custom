@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ELogLib.Interfaces
 {
-    public interface ILog
+    internal interface ILog
     {
         /// <summary>
         /// Contain the most detailed messages. These messages may contain sensitive app data. These messages are disabled by default and should not be enabled in production.
