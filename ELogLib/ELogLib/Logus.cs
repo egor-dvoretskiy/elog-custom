@@ -35,40 +35,40 @@ namespace ELogLib
         /// </summary>
         public Status LocalStatus { get; set; } = Status.Enabled;
 
-        public void Trace(string message, [CallerMemberName] string callerName = "")
+        public void Trace(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Trace(message, callerName);
+                this.logger.Trace(message, printLevel, callerName);
         }
 
-        public void Info(string message, [CallerMemberName] string callerName = "")
+        public void Info(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Info(message, callerName);
+                this.logger.Info(message, printLevel, callerName);
         }
 
-        public void Debug(string message, [CallerMemberName] string callerName = "")
+        public void Debug(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Debug(message, callerName);
+                this.logger.Debug(message, printLevel, callerName);
         }
 
-        public void Warning(string message, [CallerMemberName] string callerName = "")
+        public void Warning(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Warning(message, callerName);
+                this.logger.Warning(message, printLevel, callerName);
         }
 
-        public void Error(string source, string message, [CallerMemberName] string callerName = "")
+        public void Error(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Error(source, message, callerName);
+                this.logger.Error(message, printLevel, callerName);
         }
 
-        public void Decide(bool decision, string message, [CallerMemberName] string callerName = "")
+        public void Decide(bool decision, string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (GlobalStatus == Status.Enabled && this.LocalStatus == Status.Enabled)
-                this.logger.Decide(decision, message, callerName);
+                this.logger.Decide(decision, message, printLevel, callerName);
         }
 
         private void AssignLogger()

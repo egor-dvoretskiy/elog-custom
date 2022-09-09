@@ -15,7 +15,7 @@ namespace ELogLib.LogHandlers
         private readonly Messager _debugMessager;
         private readonly Messager _traceMessager;
         private readonly Messager _infoMessager;
-        private readonly ErrorMessager _errorMessager;
+        private readonly Messager _errorMessager;
         private readonly Messager _warningMessager;
 
         public CustomLoggerHandler()
@@ -26,7 +26,7 @@ namespace ELogLib.LogHandlers
                 Type = MessageType.Debug
             };
 
-            this._errorMessager = new ErrorMessager()
+            this._errorMessager = new Messager()
             {
                 Color = ConsoleColor.Red,
                 Type = MessageType.Error
@@ -51,42 +51,38 @@ namespace ELogLib.LogHandlers
             };
         }
 
-        /// <inheritdoc/>
-        public void Debug(string message, [CallerMemberName] string callerName = "")
+        public void Debug(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            this._debugMessager?.Print(message, callerName);
+            /*this._debugMessager?.Print(message, callerName);*/
+            this._debugMessager?.Print(message, printLevel, callerName);
         }
 
-        public void Decide(bool decision, string message, [CallerMemberName] string callerName = "")
+        public void Decide(bool decision, string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
             if (decision)
-                this.Info(string.Concat(message, "\t| Success."), callerName);
+                this.Info(string.Concat(message, "\t| Success."), printLevel, callerName);
             else
-                this.Warning(string.Concat(message, "\t| Fail."), callerName);
+                this.Warning(string.Concat(message, "\t| Fail."), printLevel, callerName);
         }
 
-        /// <inheritdoc/>
-        public void Error(string source, string message, [CallerMemberName] string callerName = "")
+        public void Error(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            this._errorMessager?.Print(source, message, callerName);
+            this._errorMessager?.Print(message, printLevel, callerName);
         }
 
-        /// <inheritdoc/>
-        public void Info(string message, [CallerMemberName] string callerName = "")
+        public void Info(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            this._infoMessager?.Print(message, callerName);
+            this._infoMessager?.Print(message, printLevel, callerName);
         }
 
-        /// <inheritdoc/>
-        public void Trace(string message, [CallerMemberName] string callerName = "")
+        public void Trace(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            this._traceMessager?.Print(message, callerName);
+            this._traceMessager?.Print(message, printLevel, callerName);
         }
 
-        /// <inheritdoc/>
-        public void Warning(string message, [CallerMemberName] string callerName = "")
+        public void Warning(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            this._warningMessager?.Print(message, callerName);
+            this._warningMessager?.Print(message, printLevel, callerName);
         }
     }
 }

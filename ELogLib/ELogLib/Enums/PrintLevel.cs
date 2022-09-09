@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ELogLib.Interfaces
+namespace ELogLib.Enums
 {
-    public interface IMessage
+    public enum PrintLevel : byte
     {
-        void Print(string message, string callerName);
+        One = 1,
+        Two,
+        Three,
+        Four
     }
 }
