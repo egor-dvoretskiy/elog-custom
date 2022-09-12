@@ -43,9 +43,9 @@ namespace ELogBenchmark.Benchmarks
 
         [Params(
             "Simple line.",
-            "Simple line with 94594-234893-41998.",
             $"Interpolated line, {cntString}",
-            "big apdosjdpasdnop3412-490kdasdkaslk_++ASD+_A_SDASD+AD!212oj strign             asDASD!+@$!@+#$!@_%#_$^$&*%&*^*("
+            "big apdosjdpasdnop3412-490kdasdkaslk_++ASD+_A_SDASD+AD!212ojasdstrigndasasdasdat34t34vt3vt4u686769700-90.786m63b532v41        asDASD!+@$!@+#$!@_%#_$^$&*%&*^*(",
+            "line with signs \nhello=16\n\rsdad= 12\n\n\t\t24 = 24."
             )]
         public string Message { get; set; }
         /*
@@ -65,31 +65,31 @@ namespace ELogBenchmark.Benchmarks
         [Benchmark]
         public void Info()
         {
-            this._logger.Info(Message, ELogLib.Enums.PrintLevel.One);
+            this._logger.Info(Message, ELogLib.Enums.PrintLevel.Two);
         }
 
         [Benchmark]
         public void Debug()
         {
-            this._logger.Debug(Message, ELogLib.Enums.PrintLevel.One);
+            this._logger.Debug(Message, ELogLib.Enums.PrintLevel.Three);
         }
 
         [Benchmark]
         public void Warning()
         {
-            this._logger.Warning(Message, ELogLib.Enums.PrintLevel.One);
+            this._logger.Warning(Message, ELogLib.Enums.PrintLevel.Four);
         }
 
         [Benchmark]
         public void Error()
         {
-            this._logger.Error(Message, ELogLib.Enums.PrintLevel.One);
+            this._logger.Error(Message, ELogLib.Enums.PrintLevel.Four);
         }
 
         [Benchmark]
         public void Decide()
         {
-            this._logger.Decide(true, Message, ELogLib.Enums.PrintLevel.One);
+            this._logger.Decide(true, Message, ELogLib.Enums.PrintLevel.Two);
         }
     }
 }

@@ -10,41 +10,41 @@ using System.Threading.Tasks;
 
 namespace ELogLib.LogHandlers
 {
-    internal class CustomLoggerHandler : ILog
+    internal class HeavyLogger : ILog
     {
-        private readonly Messager _debugMessager;
-        private readonly Messager _traceMessager;
-        private readonly Messager _infoMessager;
-        private readonly Messager _errorMessager;
-        private readonly Messager _warningMessager;
+        private readonly HeavyMessager _debugMessager;
+        private readonly HeavyMessager _traceMessager;
+        private readonly HeavyMessager _infoMessager;
+        private readonly HeavyMessager _errorMessager;
+        private readonly HeavyMessager _warningMessager;
 
-        public CustomLoggerHandler()
+        public HeavyLogger()
         {
-            this._debugMessager = new Messager()
+            this._debugMessager = new HeavyMessager()
             {
                 Color = ConsoleColor.White,
                 Type = MessageType.Debug
             };
 
-            this._errorMessager = new Messager()
+            this._errorMessager = new HeavyMessager()
             {
                 Color = ConsoleColor.Red,
                 Type = MessageType.Error
             };
 
-            this._traceMessager = new Messager()
+            this._traceMessager = new HeavyMessager()
             {
                 Color = ConsoleColor.Gray,
                 Type = MessageType.Trace
             };
 
-            this._warningMessager = new Messager()
+            this._warningMessager = new HeavyMessager()
             {
                 Color = ConsoleColor.Yellow,
                 Type = MessageType.Warning
             };
 
-            this._infoMessager = new Messager()
+            this._infoMessager = new HeavyMessager()
             {
                 Color = ConsoleColor.Green,
                 Type = MessageType.Info
@@ -53,7 +53,6 @@ namespace ELogLib.LogHandlers
 
         public void Debug(string message, PrintLevel printLevel = PrintLevel.One, [CallerMemberName] string callerName = "")
         {
-            /*this._debugMessager?.Print(message, callerName);*/
             this._debugMessager?.Print(message, printLevel, callerName);
         }
 

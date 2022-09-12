@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -13,6 +13,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ELogLib\ELogLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EMonolithLib">
+      <HintPath>..\..\..\EMonolith\EMonolithLib\EMonolithLib\bin\Debug\netstandard2.0\EMonolithLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

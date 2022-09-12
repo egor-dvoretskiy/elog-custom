@@ -14,16 +14,16 @@ namespace ELogLib
     {
         private ILog logger;
 
-        public Logus(LoggerType type = LoggerType.Custom)
+        public Logus(LoggerType type = LoggerType.Heavy)
         {
-            this.Type = LoggerType.Custom;
+            this.Type = type;
             this.AssignLogger();
         }
 
         /// <summary>
         /// The type of Logus.
         /// </summary>
-        public LoggerType Type { get; set; } = LoggerType.Custom;
+        public LoggerType Type { get; set; } = LoggerType.Heavy;
 
         /// <summary>
         /// Setting status to all instances of Logus.
@@ -75,10 +75,12 @@ namespace ELogLib
         {
             switch(this.Type)
             {
-                case LoggerType.Custom:
-                case LoggerType.Microsoft:
+                case LoggerType.Simple:
+                    this.logger = new SimpleLogger();
+                    break;
+                case LoggerType.Heavy:
                 default:
-                    this.logger = new CustomLoggerHandler();
+                    this.logger = new HeavyLogger();
                     break;
             }
         }

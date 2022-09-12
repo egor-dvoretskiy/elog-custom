@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ELogLib.Models
 {
-    internal class Messager
+    internal class HeavyMessager
     {
         private readonly ConsoleColor _timeMessageColor = ConsoleColor.White;
         private readonly int _cursorDividerPosition = 18;
@@ -33,36 +33,26 @@ namespace ELogLib.Models
         public ConsoleColor Color { get; set; }
 
         public MessageType Type { get; set; }
-/*
-        public void Print(string message, string callerName)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"-------------->\t{_typesForPrint[this.Type]}\tCaller Name: {callerName}");
-            sb.AppendLine("{");
-            sb.AppendLine();
-            sb.AppendLine($"{message}");
-            sb.AppendLine();
-            sb.AppendLine("}");
-
-            Console.ForegroundColor = this.Color;
-            Console.WriteLine(sb.ToString());
-            Console.ResetColor();
-        }*/
 
         public void Print(string message, PrintLevel printLevel, string callerName)
         {
             Console.SetCursorPosition(0, Console.CursorTop);
 
             // set info message
-            this.PrintColoredMessage($"[{DateTime.Now.ToString("HH:mm:ss")}]{_typesForPrint[this.Type]}", ConsoleColor.White);
-            /*this.SetDivider();*/
+            this.PrintDateTimeInfo();
             // -
 
             // parse string into lines if neccessary
-            var list = this.DisassembleMessage(message);
+            var list = this.DisassembleMessage(message, printLevel);
             // -
 
             this.PrintDisassamledMessage(list, printLevel);
+        }
+
+        private void PrintDateTimeInfo()
+        {
+            this.PrintColoredMessage($"[{DateTime.Now.ToString("HH:mm:ss")}]", ConsoleColor.White);
+            this.PrintColoredMessage($"{_typesForPrint[this.Type]}", this.Color);
         }
 
         private void PrintColoredMessage(string message, ConsoleColor consoleColor)
@@ -85,37 +75,65 @@ namespace ELogLib.Models
                 this.SetDivider();
                 Console.SetCursorPosition(_consoleOffset[printLevel], Console.CursorTop);
                 this.PrintColoredMessage(lines[i], this.Color);
-                Console.SetCursorPosition(_consoleOffset[printLevel], Console.CursorTop + 1);
+                Console.CursorTop++;
             }
         }
 
-        private List<string> DisassembleMessage(string message)
+        private List<string> DisassembleMessage(string message, PrintLevel printLevel)
         {
-            int availableAmountOfSymbols = Console.WindowWidth - Console.CursorLeft;
-            List<string> disassemledMessage = new List<string>();
+            int cursorLeft = _consoleOffset is null ? Console.CursorLeft : _consoleOffset[printLevel];
+            int availableAmountOfSymbols = Console.WindowWidth - cursorLeft;
 
+            StringBuilder stringBuilder = new StringBuilder();
+            List<string> lines = new List<string>();
             string[] words = message.Split(' ');
 
-            int localSymbolsAmount = 0;
-            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < words.Length; i++)
             {
-                if (localSymbolsAmount + words[i].Length >= availableAmountOfSymbols || i == words.Length - 1)
+                int inlineAvailableSymbols = availableAmountOfSymbols - stringBuilder.Length;
+
+                if (words[i].Length <= inlineAvailableSymbols)
                 {
-                    disassemledMessage.Add(stringBuilder.ToString());
-                    
-                    localSymbolsAmount = 0;
-                    stringBuilder.Clear();
+                    stringBuilder.Append(words[i]);
+                    stringBuilder.Append(" ");
+                    continue;
                 }
 
-                if (i != words.Length - 1)
+                if (words[i].Length > availableAmountOfSymbols)
                 {
-                    localSymbolsAmount += words[i].Length;
+                    int restWordLength = words[i].Length;
+                    int currentIndex = 0;
+
+                    while (restWordLength > availableAmountOfSymbols)
+                    {
+                        string word = words[i].Substring(currentIndex, availableAmountOfSymbols - stringBuilder.Length);
+                        stringBuilder.Append(word);
+                        currentIndex += availableAmountOfSymbols;
+                        restWordLength -= availableAmountOfSymbols;
+
+                        lines.Add(stringBuilder.ToString());
+                        stringBuilder.Clear();
+                    }
+
+                    string restWord = words[i].Substring(currentIndex, restWordLength);
+
+                    stringBuilder.Append(restWord);
+                }
+                else
+                {
+                    lines.Add(stringBuilder.ToString());
+                    stringBuilder.Clear();
+
                     stringBuilder.Append(words[i]);
                 }
+
+                stringBuilder.Append(" ");
             }
 
-            return disassemledMessage;
+            lines.Add(stringBuilder.ToString());
+            stringBuilder.Clear();
+
+            return lines;
         }
     }
 }
