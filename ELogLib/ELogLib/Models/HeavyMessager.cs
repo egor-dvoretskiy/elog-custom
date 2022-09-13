@@ -46,7 +46,7 @@ namespace ELogLib.Models
             var list = this.DisassembleMessage(message, printLevel);
             // -
 
-            this.PrintDisassamledMessage(list, printLevel);
+            this.PrintDisassamledMessage(list);
         }
 
         private void PrintDateTimeInfo()
@@ -68,72 +68,106 @@ namespace ELogLib.Models
             this.PrintColoredMessage("|", this._timeMessageColor);
         }
 
-        private void PrintDisassamledMessage(List<string> lines, PrintLevel printLevel)
+        private void PrintDisassamledMessage(List<InlineLog> lines)
         {
             for (int i = 0; i < lines.Count; i++)
             {
                 this.SetDivider();
-                Console.SetCursorPosition(_consoleOffset[printLevel], Console.CursorTop);
-                this.PrintColoredMessage(lines[i], this.Color);
+                Console.SetCursorPosition(_consoleOffset[lines[i].PrintLevel], Console.CursorTop);
+                this.PrintColoredMessage(lines[i].Log, this.Color);
                 Console.CursorTop++;
             }
         }
 
-        private List<string> DisassembleMessage(string message, PrintLevel printLevel)
+        private List<InlineLog> DisassembleMessage(string message, PrintLevel printLevel)
         {
             int cursorLeft = _consoleOffset is null ? Console.CursorLeft : _consoleOffset[printLevel];
             int availableAmountOfSymbols = Console.WindowWidth - cursorLeft;
 
             StringBuilder stringBuilder = new StringBuilder();
-            List<string> lines = new List<string>();
-            string[] words = message.Split(' ');
+            List<InlineLog> logs = new List<InlineLog>();
 
-            for (int i = 0; i < words.Length; i++)
+            string[] wordsNewLine = message.Split('\n');
+
+            for (int k = 0; k < wordsNewLine.Length; k++)
             {
-                int inlineAvailableSymbols = availableAmountOfSymbols - stringBuilder.Length;
+                PrintLevel localPrintLevel = printLevel;
 
-                if (words[i].Length <= inlineAvailableSymbols)
+                wordsNewLine[k] = wordsNewLine[k].Replace("\r", string.Empty);
+
+                if (wordsNewLine[k].Contains("\t"))
                 {
-                    stringBuilder.Append(words[i]);
-                    stringBuilder.Append(" ");
-                    continue;
+                    localPrintLevel = this.IncreasePrintLevel(printLevel);
+                    wordsNewLine[k] = wordsNewLine[k].Replace("\t", string.Empty);
                 }
 
-                if (words[i].Length > availableAmountOfSymbols)
+                string[] words = wordsNewLine[k].Split(' ');
+
+                for (int i = 0; i < words.Length; i++)
                 {
-                    int restWordLength = words[i].Length;
-                    int currentIndex = 0;
+                    int inlineAvailableSymbols = availableAmountOfSymbols - stringBuilder.Length;
 
-                    while (restWordLength > availableAmountOfSymbols)
+                    if (words[i].Length <= inlineAvailableSymbols)
                     {
-                        string word = words[i].Substring(currentIndex, availableAmountOfSymbols - stringBuilder.Length);
-                        stringBuilder.Append(word);
-                        currentIndex += availableAmountOfSymbols;
-                        restWordLength -= availableAmountOfSymbols;
-
-                        lines.Add(stringBuilder.ToString());
-                        stringBuilder.Clear();
+                        stringBuilder.Append(words[i]);
+                        stringBuilder.Append(" ");
+                        continue;
                     }
 
-                    string restWord = words[i].Substring(currentIndex, restWordLength);
+                    if (words[i].Length > availableAmountOfSymbols)
+                    {
+                        int restWordLength = words[i].Length;
+                        int currentIndex = 0;
 
-                    stringBuilder.Append(restWord);
+                        while (restWordLength > availableAmountOfSymbols)
+                        {
+                            string word = words[i].Substring(currentIndex, availableAmountOfSymbols - stringBuilder.Length);
+                            stringBuilder.Append(word);
+                            currentIndex += availableAmountOfSymbols;
+                            restWordLength -= availableAmountOfSymbols;
+
+                            logs.Add(new InlineLog()
+                            {
+                                Log = stringBuilder.ToString(),
+                                PrintLevel = localPrintLevel
+                            });
+                            stringBuilder.Clear();
+                        }
+
+                        string restWord = words[i].Substring(currentIndex, restWordLength);
+
+                        stringBuilder.Append(restWord);
+                    }
+                    else
+                    {
+                        logs.Add(new InlineLog()
+                        {
+                            Log = stringBuilder.ToString(),
+                            PrintLevel = localPrintLevel
+                        });
+                        stringBuilder.Clear();
+
+                        stringBuilder.Append(words[i]);
+                    }
+
+                    stringBuilder.Append(" ");
                 }
-                else
+
+                logs.Add(new InlineLog()
                 {
-                    lines.Add(stringBuilder.ToString());
-                    stringBuilder.Clear();
+                    Log = stringBuilder.ToString(),
+                    PrintLevel = localPrintLevel
+                });
+                stringBuilder.Clear();
+            }           
 
-                    stringBuilder.Append(words[i]);
-                }
+            return logs;
+        }
 
-                stringBuilder.Append(" ");
-            }
-
-            lines.Add(stringBuilder.ToString());
-            stringBuilder.Clear();
-
-            return lines;
+        private PrintLevel IncreasePrintLevel(PrintLevel printLevel)
+        {
+            int currentLevel = (int)printLevel + 1 > 4 ? 4 : (int)printLevel + 1;
+            return (PrintLevel)currentLevel;
         }
     }
 }

@@ -18,12 +18,13 @@ namespace ELogBenchmark
             _logger.Debug("debug darling amazing brilliant terrible kasdhoahjsdouqahdoahsdoahsdkuhaduhasdkauhdkhasidaisduaiusd", ELogLib.Enums.PrintLevel.Two);
             _logger.Info("infosdaid98u12480cu1m0we89u01294uf0rhjf0e28rywde908fy930erhe9f8h20830u02c8ewu2908fjie983h293hf9237y info?", ELogLib.Enums.PrintLevel.One);*/
 
-            _logger.Warning("kurwa\n\r\tone,\n\r\ttwo");
+            /*_logger.Warning("kurwa\n\r\tone,\n\r\ttwo");
+            _logger.Debug("just a message.");*/
 
             /*var summary = BenchmarkRunner.Run<ELogBenchmark.Benchmarks.ELogTests>();*/
-/*
+
             ELogTests2 eLogTests2 = new ELogTests2();
-            eLogTests2.Run();*/
+            eLogTests2.Run();
         }
     }
 }

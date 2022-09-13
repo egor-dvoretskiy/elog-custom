@@ -13,8 +13,9 @@ namespace ELogLib
     public class Logus : ILog
     {
         private ILog logger;
+        private LoggerType type = LoggerType.Simple;
 
-        public Logus(LoggerType type = LoggerType.Heavy)
+        public Logus(LoggerType type = LoggerType.Simple)
         {
             this.Type = type;
             this.AssignLogger();
@@ -23,7 +24,14 @@ namespace ELogLib
         /// <summary>
         /// The type of Logus.
         /// </summary>
-        public LoggerType Type { get; set; } = LoggerType.Heavy;
+        public LoggerType Type {
+            get => this.type; 
+            set
+            {
+                this.type = value;
+                this.AssignLogger();
+            }
+        }
 
         /// <summary>
         /// Setting status to all instances of Logus.
